@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="EduManage – A complete school management system for managing students, teachers, classes, grades, and attendance." />
+  <meta name="keywords" content="school management, student portal, teacher portal, grades, attendance, education" />
+  <meta name="author" content="EduManage" />
+  <meta name="theme-color" content="#1e2a3a" />
+
+  <!-- Open Graph / Social sharing -->
+  <meta property="og:type"        content="website" />
+  <meta property="og:title"       content="EduManage – School Management System" />
+  <meta property="og:description" content="Manage students, teachers, classes, grades, and attendance in one place." />
+  <meta property="og:image"       content="https://via.placeholder.com/1200x630/1e2a3a/3498db?text=EduManage" />
+
+  <title>EduManage – School Management System</title>
+
+  <!-- Favicon (inline SVG) -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%231e2a3a'/><text y='.9em' font-size='72' x='12' fill='%233498db'>🎓</text></svg>" />
+
+  <!-- Preconnect to CDN origins -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
+
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+<!-- ==================== LOGIN PAGE ==================== -->
+<div id="page-login" class="page active">
+  <div class="login-wrapper">
+    <div class="login-box">
+      <div class="login-logo">
+        <i class="fas fa-graduation-cap"></i>
+        <h1>EduManage</h1>
+        <p>School Management System</p>
+      </div>
+      <form id="login-form">
+        <div class="form-group">
+          <label><i class="fas fa-envelope"></i> Email</label>
+          <input type="email" id="login-email" placeholder="Enter your email" required />
+        </div>
+        <div class="form-group">
+          <label><i class="fas fa-lock"></i> Password</label>
+          <input type="password" id="login-password" placeholder="Enter your password" required />
+        </div>
+        <div id="login-error" class="alert alert-danger hidden"></div>
+        <button type="submit" class="btn btn-primary btn-full">
+          <i class="fas fa-sign-in-alt"></i> Sign In
+        </button>
+      </form>
+      <div class="login-contact">
+        <i class="fas fa-info-circle"></i>
+        Contact your school administrator if you forgot your credentials.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== MAIN APP ==================== -->
+<div id="page-app" class="page">
+
+  <!-- Sidebar -->
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-header">
+      <i class="fas fa-graduation-cap"></i>
+      <span>EduManage</span>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="#" class="nav-item active" data-view="dashboard">
+        <i class="fas fa-tachometer-alt"></i> <span>Dashboard</span>
+      </a>
+      <a href="#" class="nav-item admin-only" data-view="students">
+        <i class="fas fa-user-graduate"></i> <span>Students</span>
+      </a>
+      <a href="#" class="nav-item admin-only" data-view="teachers">
+        <i class="fas fa-chalkboard-teacher"></i> <span>Teachers</span>
+      </a>
+      <a href="#" class="nav-item admin-only" data-view="classes">
+        <i class="fas fa-school"></i> <span>Classes</span>
+      </a>
+      <a href="#" class="nav-item staff-only" data-view="grades">
+        <i class="fas fa-star"></i> <span>Grades</span>
+      </a>
+      <a href="#" class="nav-item staff-only" data-view="attendance">
+        <i class="fas fa-clipboard-check"></i> <span>Attendance</span>
+      </a>
+      <a href="#" class="nav-item student-only" data-view="my-grades">
+        <i class="fas fa-star"></i> <span>My Grades</span>
+      </a>
+      <a href="#" class="nav-item student-only" data-view="my-attendance">
+        <i class="fas fa-clipboard-check"></i> <span>My Attendance</span>
+      </a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-info">
+        <i class="fas fa-user-circle fa-2x"></i>
+        <div>
+          <div id="sidebar-user-name" class="user-name"></div>
+          <div id="sidebar-user-role" class="user-role"></div>
+        </div>
+      </div>
+      <button id="logout-btn" class="btn-logout">
+        <i class="fas fa-sign-out-alt"></i> Logout
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <div class="main-content" id="main-content">
+    <header class="top-header">
+      <button id="sidebar-toggle" class="sidebar-toggle">
+        <i class="fas fa-bars"></i>
+      </button>
+      <h2 id="page-title">Dashboard</h2>
+      <div class="header-right">
+        <span id="header-user"></span>
+      </div>
+    </header>
+
+    <!-- ---- DASHBOARD VIEW ---- -->
+    <div id="view-dashboard" class="view active">
+      <div class="stats-grid" id="stats-grid"></div>
+      <div class="welcome-card">
+        <h3>Welcome to EduManage!</h3>
+        <p>Use the sidebar to navigate between modules. Data is stored locally in your browser.</p>
+      </div>
+    </div>
+
+    <!-- ---- STUDENTS VIEW ---- -->
+    <div id="view-students" class="view">
+      <div class="view-header">
+        <h3>Students</h3>
+        <div class="view-actions">
+          <input type="text" id="student-search" class="search-input" placeholder="Search students..." />
+          <button class="btn btn-primary" onclick="Students.openModal()">
+            <i class="fas fa-plus"></i> Add Student
+          </button>
+        </div>
+      </div>
+      <div class="table-container">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>ID</th><th>Name</th><th>Class</th><th>Email</th><th>Phone</th><th>Guardian</th><th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="students-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ---- TEACHERS VIEW ---- -->
+    <div id="view-teachers" class="view">
+      <div class="view-header">
+        <h3>Teachers</h3>
+        <div class="view-actions">
+          <input type="text" id="teacher-search" class="search-input" placeholder="Search teachers..." />
+          <button class="btn btn-primary" onclick="Teachers.openModal()">
+            <i class="fas fa-plus"></i> Add Teacher
+          </button>
+        </div>
+      </div>
+      <div class="table-container">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>ID</th><th>Name</th><th>Subject</th><th>Email</th><th>Phone</th><th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="teachers-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ---- CLASSES VIEW ---- -->
+    <div id="view-classes" class="view">
+      <div class="view-header">
+        <h3>Classes</h3>
+        <div class="view-actions">
+          <button class="btn btn-primary" onclick="Classes.openModal()">
+            <i class="fas fa-plus"></i> Add Class
+          </button>
+        </div>
+      </div>
+      <div id="classes-grid" class="cards-grid"></div>
+    </div>
+
+    <!-- ---- GRADES VIEW ---- -->
+    <div id="view-grades" class="view">
+      <div class="view-header">
+        <h3>Grades</h3>
+      </div>
+      <div class="filter-bar">
+        <select id="grades-class-select" class="select-input">
+          <option value="">Select Class</option>
+        </select>
+        <input type="text" id="grades-subject" class="form-input" placeholder="Subject" />
+        <button class="btn btn-primary" onclick="Grades.loadGradeSheet()">
+          <i class="fas fa-table"></i> Load Grade Sheet
+        </button>
+      </div>
+      <div id="grades-sheet"></div>
+    </div>
+
+    <!-- ---- ATTENDANCE VIEW ---- -->
+    <div id="view-attendance" class="view">
+      <div class="view-header">
+        <h3>Attendance</h3>
+      </div>
+      <div class="filter-bar">
+        <select id="att-class-select" class="select-input">
+          <option value="">Select Class</option>
+        </select>
+        <input type="date" id="att-date" class="form-input" />
+        <button class="btn btn-primary" onclick="Attendance.loadSheet()">
+          <i class="fas fa-clipboard"></i> Load Sheet
+        </button>
+        <button class="btn btn-secondary" onclick="Attendance.showReport()">
+          <i class="fas fa-chart-bar"></i> Report
+        </button>
+      </div>
+      <div id="attendance-sheet"></div>
+    </div>
+
+    <!-- ---- MY GRADES VIEW (student) ---- -->
+    <div id="view-my-grades" class="view">
+      <div class="view-header"><h3>My Grades</h3></div>
+      <div id="my-grades-content"></div>
+    </div>
+
+    <!-- ---- MY ATTENDANCE VIEW (student) ---- -->
+    <div id="view-my-attendance" class="view">
+      <div class="view-header"><h3>My Attendance</h3></div>
+      <div id="my-attendance-content"></div>
+    </div>
+
+  </div><!-- /main-content -->
+</div><!-- /page-app -->
+
+<!-- ==================== MODALS ==================== -->
+
+<!-- Student Modal -->
+<div id="student-modal" class="modal-overlay hidden">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="student-modal-title">Add Student</h3>
+      <button class="modal-close" onclick="Students.closeModal()"><i class="fas fa-times"></i></button>
+    </div>
+    <form id="student-form">
+      <input type="hidden" id="student-id" />
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Full Name *</label>
+          <input type="text" id="student-name" required />
+        </div>
+        <div class="form-group">
+          <label>Email *</label>
+          <input type="email" id="student-email" required />
+        </div>
+        <div class="form-group">
+          <label>Phone</label>
+          <input type="text" id="student-phone" />
+        </div>
+        <div class="form-group">
+          <label>Date of Birth</label>
+          <input type="date" id="student-dob" />
+        </div>
+        <div class="form-group">
+          <label>Class</label>
+          <select id="student-class"></select>
+        </div>
+        <div class="form-group">
+          <label>Guardian Name</label>
+          <input type="text" id="student-guardian" />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="Students.closeModal()">Cancel</button>
+        <button type="submit" class="btn btn-primary">Save</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Teacher Modal -->
+<div id="teacher-modal" class="modal-overlay hidden">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="teacher-modal-title">Add Teacher</h3>
+      <button class="modal-close" onclick="Teachers.closeModal()"><i class="fas fa-times"></i></button>
+    </div>
+    <form id="teacher-form">
+      <input type="hidden" id="teacher-id" />
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Full Name *</label>
+          <input type="text" id="teacher-name" required />
+        </div>
+        <div class="form-group">
+          <label>Email *</label>
+          <input type="email" id="teacher-email" required />
+        </div>
+        <div class="form-group">
+          <label>Subject *</label>
+          <input type="text" id="teacher-subject" required />
+        </div>
+        <div class="form-group">
+          <label>Phone</label>
+          <input type="text" id="teacher-phone" />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="Teachers.closeModal()">Cancel</button>
+        <button type="submit" class="btn btn-primary">Save</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Class Modal -->
+<div id="class-modal" class="modal-overlay hidden">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="class-modal-title">Add Class</h3>
+      <button class="modal-close" onclick="Classes.closeModal()"><i class="fas fa-times"></i></button>
+    </div>
+    <form id="class-form">
+      <input type="hidden" id="class-id" />
+      <div class="form-group">
+        <label>Class Name *</label>
+        <input type="text" id="class-name" placeholder="e.g. Grade 10-A" required />
+      </div>
+      <div class="form-group">
+        <label>Teacher</label>
+        <select id="class-teacher"></select>
+      </div>
+      <div class="form-group">
+        <label>Students (hold Ctrl/Cmd to select multiple)</label>
+        <select id="class-students" multiple style="height:150px;"></select>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="Classes.closeModal()">Cancel</button>
+        <button type="submit" class="btn btn-primary">Save</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Toast notification -->
+<div id="toast" class="toast hidden"></div>
+
+<!-- Scripts -->
+<script src="js/app.js"></script>
+<script src="js/students.js"></script>
+<script src="js/teachers.js"></script>
+<script src="js/classes.js"></script>
+<script src="js/grades.js"></script>
+<script src="js/attendance.js"></script>
+
+</body>
+</html>
